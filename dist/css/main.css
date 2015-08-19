@@ -1,0 +1,135 @@
+@import url(http://fonts.googleapis.com/css?family=Satisfy|Montserrat:400,700);
+@import url("../../dist/lib/font-awesome/css/font-awesome.min.css");
+* {
+  box-sizing: border-box; }
+
+a {
+  color: #125688;
+  text-decoration: none; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #FAFAFA;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif; }
+
+header.top {
+  background-color: #fff;
+  border-bottom: 2px solid #edeeee; }
+  header.top .wrapper {
+    max-width: 900px;
+    padding: 15px;
+    overflow: auto;
+    margin: 0 auto; }
+  header.top h1 {
+    margin: 0;
+    padding: 0;
+    font-family: 'Satisfy', cursive;
+    color: #004879;
+    font-size: 1.5em;
+    float: left;
+    width: 20%; }
+  header.top nav {
+    float: left;
+    width: 60%;
+    height: 30px;
+    margin-left: 20%;
+    position: relative;
+    top: 0;
+    left: 0; }
+    header.top nav .account {
+      position: absolute;
+      top: 9px;
+      right: 0;
+      color: #125688;
+      text-decoration: none; }
+    header.top nav input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #fafafa;
+      border: solid 1px #edeeee;
+      border-radius: 15px;
+      color: #818488;
+      cursor: text;
+      text-align: center;
+      font-size: .9em;
+      font-weight: 300;
+      height: 28px;
+      width: 185px;
+      padding: 7px; }
+      header.top nav input:focus {
+        outline: none; }
+
+.photos {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 15px; }
+  .photos .photo {
+    margin: 0 auto;
+    width: 80%;
+    background-color: #fff;
+    border: 1px solid #edeeee;
+    border-radius: 3px;
+    margin-bottom: 60px; }
+    .photos .photo header {
+      height: 64px;
+      padding: 14px 20px;
+      background: #fff;
+      position: relative; }
+      .photos .photo header img {
+        width: 30px;
+        height: 30px;
+        border-radius: 180px;
+        flex-basis: 30px; }
+      .photos .photo header a {
+        position: absolute;
+        top: 20px;
+        left: 60px; }
+      .photos .photo header .timestamp {
+        position: absolute;
+        top: 20px;
+        right: 15px;
+        color: #a5a7aa; }
+    .photos .photo img {
+      width: 100%; }
+    .photos .photo .likes, .photos .photo .comments {
+      padding: 15px;
+      font-size: .8em; }
+    .photos .photo footer {
+      padding: 15px;
+      position: relative; }
+      .photos .photo footer .toggleLikeBtn {
+        position: relative;
+        background: transparent;
+        border: none;
+        outline: none;
+        font-size: 1.5em;
+        color: #929696; }
+      .photos .photo footer input {
+        position: relative;
+        border: none;
+        outline: none;
+        padding: 15px;
+        font-size: .9em;
+        width: 80%; }
+      .photos .photo footer .controls {
+        position: absolute;
+        top: 30px;
+        right: 15px;
+        border: none;
+        outline: none;
+        font-size: .9em;
+        color: #929696;
+        background: transparent; }
+
+.comments .comment {
+  margin: 8px 0; }
+  .comments .comment a {
+    margin: 0 4px 0 0; }
+
+@media (max-width: 450px) {
+  header.top nav input {
+    display: none; } }
