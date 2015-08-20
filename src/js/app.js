@@ -1,11 +1,18 @@
-import React from 'react';
+import React from 'react/addons';
+import $ from 'jquery';
+import {_} from 'lodash';
+
+let ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 class App extends React.Component {
   render() {
+    let comments = {
+      foo: 'foo'
+    };
     return (
-      <div>
-        <SiteNav name="Instagramps"></SiteNav>
-        <Photos/>
+      <div className="wrapper">
+        <SiteNav name="Instagramps"/>
+        <Photos comments={comments}/>
       </div>
     )
   }
@@ -25,9 +32,10 @@ class SiteNav extends React.Component {
       <header className="top">
         <div className="wrapper">
           <h1>{this.props.name}</h1>
+
           <nav>
             <input type="text" placeholder="search"/>
-            <AccountDropdown user='julie'/>
+            <AccountDropdown user='will'/>
           </nav>
         </div>
       </header>
@@ -36,47 +44,66 @@ class SiteNav extends React.Component {
 }
 
 class Photos extends React.Component {
+  static propTypes: {
+    comments: React.PropTypes.array.isRequired
+  }
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      photos: []
+    };
+  }
+
+  componentDidMount() {
+    let url = 'https://tiny-starburst.herokuapp.com/collections/posts';
+    let self = this;
+
+    $.ajax(url).done((response) => {
+      self.setState({
+        photos: response
+      });
+    });
+  }
+
+  onCommentAdd(photoId, comment) {
+    let photoIndex = _.findIndex(this.state.photos, (photo) => {
+      return photo._id === photoId;
+    });
+
+    let photos = _.cloneDeep(this.state.photos);
+    photos[photoIndex].comments.push(comment);
+
+    this.setState({
+      photos: photos
+    });
+  }
+
   render() {
-    let photos = [
-      {
-        likes: 1,
-        created: '1h',
-        url: 'http://lorempixel.com/output/city-q-c-600-600-3.jpg',
-        user: 'julie',
-        comments: [
-          {user: 'ben', content: 'cool pic!'}
-        ]
-      },
+    let photos = this.state.photos.sort((a, b) => {
+      return a._id - b._id;
+    });
 
-      {
-        likes: 16,
-        created: '12h',
-        url: 'http://lorempixel.com/output/city-q-c-600-600-4.jpg',
-        user: 'tyler',
-        comments: [
-          {user: 'adam', content: 'way cool'}
-        ]
-      },
+    let items = [];
 
-      {
-        likes: 250,
-        created: '3d',
-        url: 'http://lorempixel.com/output/city-q-c-600-600-7.jpg',
-        user: 'adam',
-        comments: [
-          {user: 'bryce', content: 'awesome'},
-          {user: 'jordan', content: 'love this!'}
-        ]
-      }
-    ];
+    if (!photos.length) {
+      return (
+        <div className="photos">
+          No photos yet.
+        </div>
+      )
+    }
 
     return (
       <div className="photos">
-        {
-          photos.map((photo) => {
-            return <Photo {...photo}/>
-          })
-        }
+        <ReactCSSTransitionGroup transitionName="photos" transitionAppear={true}>
+          {
+            photos.map((photo) => {
+              return <Photo {...photo} key={photo._id} onCommentAdd={this.onCommentAdd.bind(this)}/>
+            })
+          }
+        </ReactCSSTransitionGroup>
       </div>
     )
   }
@@ -95,7 +122,7 @@ class Photo extends React.Component {
         <Comments comments={this.props.comments}/>
         <footer>
           <ToggleLike/>
-          <AddComment/>
+          <AddComment photo={this.props} onCommentAdd={this.props.onCommentAdd.bind(this)}/>
           <PhotoControls/>
         </footer>
       </div>
@@ -103,81 +130,103 @@ class Photo extends React.Component {
   }
 }
 
-class UserAvatar extends React.Component {
-  render() {
-    return (
+ class UserAvatar extends React.Component {
+   render() {
+     return (
       <div>
-        <img src="https://en.gravatar.com/userimage/618378/42fa7959870f08db4d723d6d8aa97d77.jpg"/>
+        <img src="https://en.gravatar.com/userimage/4939165/7de72dc8d20ee0d593e0dd5774d64609.jpeg"/>
         <a href="#">{this.props.user}</a>
       </div>
-    )
-  }
-}
+     )
+   }
+ }
 
-class TimeStamp extends React.Component {
-  render() {
-    return (
-      <div className="timestamp">
-        {this.props.created}
-      </div>
-    )
-  }
-}
-class Likes extends React.Component {
-  render() {
-    return (
-      <div className="likes">
-        {this.props.likes} likes
-      </div>
+ class TimeStamp extends React.Component {
+   render() {
+     return (
+       <div className="timestamp">
+         {this.props.created}
+       </div>
+     )
+   }
+ }
 
-    )
-  }
-}
-class Comments extends React.Component {
-  render() {
-    let comments = this.props.comments;
+ class Likes extends React.Component {
+   render() {
+     return (
+       <div className="likes">
+         {this.props.likes} likes
+       </div>
+     )
+   }
+ }
 
-    return (
-      <div className="comments">
-        {
-          comments.map((comment) => {
-            return <Comment {...comment}/>
-          })
-        }
-      </div>
-    )
-  }
-}
+  class Comments extends React.Component {
+    render() {
+      let comments = this.props.comments;
 
-class Comment extends React.Component {
-  render() {
-    return (
-      <div className="comment">
-        <p>
-          <a href="#">{this.props.user}</a>
-          {this.props.content}
-        </p>
-      </div>
-    )
+      return (
+        <div className="comments">
+          {
+            comments.map((comment, i) => {
+              return <Comment {...comment} key={i}/>
+            })
+          }
+        </div>
+      )
+    }
   }
-}
+
+  class Comment extends React.Component {
+    render() {
+      return (
+        <div className="comment">
+          <p>
+            <a href="#">{this.props.user}</a>
+            {this.props.content}
+          </p>
+        </div>
+      )
+    }
+  }
 
 class ToggleLike extends React.Component {
   render() {
     return (
-      <div>
-        <button><i className="fa fa-heart-o"></i></button>
-      </div>
+      <button className="toggleLikeBtn"><i className="fa fa-heart-o"></i></button>
     )
   }
 }
 
 class AddComment extends React.Component {
+  onAdd(e) {
+    if (e.which === 13) {
+      let photo = _.cloneDeep(this.props.photo);
+
+      let url = `https://tiny-starburst.herokuapp.com/collections/posts/${photo._id}`;
+      let self = this;
+      let comment = {
+        user: 'will',
+        content: this.refs.input.getDOMNode().value
+      };
+
+      photo.comments.push(comment);
+
+      $.ajax(url, {
+        method: 'PUT',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(photo)
+      }).always(() => {
+        self.props.onCommentAdd(photo._id, comment);
+        self.refs.input.getDOMNode().value = '';
+      })
+    }
+  }
+
   render() {
     return (
-      <div>
-        <input placeholder="Add Comment..."/>
-      </div>
+      <input ref="input" placeholder="Add Comment..." onKeyPress={this.onAdd.bind(this)}/>
     )
   }
 }
@@ -185,13 +234,9 @@ class AddComment extends React.Component {
 class PhotoControls extends React.Component {
   render() {
     return (
-      <div>
-        <button className="controls"><i className="fa fa-ellipsis-h"></i></button>
-      </div>
+      <button className="controls"><i className="fa fa-ellipsis-h"></i></button>
     )
   }
 }
-
-
 
 React.render(<App/>, document.getElementById('app'));

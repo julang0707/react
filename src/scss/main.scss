@@ -1,30 +1,32 @@
 @import url(http://fonts.googleapis.com/css?family=Satisfy|Montserrat:400,700);
 @import url("../../dist/lib/font-awesome/css/font-awesome.min.css");
-
 * {
   box-sizing: border-box;
 }
+
 a {
   color: #125688;
   text-decoration: none;
 }
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #FAFAFA;
   font-size: 16px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: Montserrat, sans-serif;
+  padding: 0;
+  margin: 0;
+  background: #FAFAFA;
 }
 
+
 header.top {
-  background-color: #fff;
-  border-bottom: 2px solid #edeeee;
+  background: #fff;
+  border-bottom: 1px solid #edeeee;
 
   .wrapper {
-    max-width: 900px;
     padding: 15px;
-    overflow: auto;
+    width: 80%;
+    max-width: 900px;
     margin: 0 auto;
+    overflow: auto;
   }
   h1 {
     margin: 0;
@@ -35,6 +37,7 @@ header.top {
     float: left;
     width: 20%;
   }
+
   nav {
     float: left;
     width: 60%;
@@ -44,6 +47,7 @@ header.top {
     top: 0;
     left: 0;
 
+    overflow: auto;
     .account {
       position: absolute;
       top: 9px;
@@ -56,9 +60,11 @@ header.top {
       position: absolute;
       top: 0;
       left: 0;
+
       background: #fafafa;
       border: solid 1px #edeeee;
       border-radius: 15px;
+
       color: #818488;
       cursor: text;
       text-align: center;
@@ -74,6 +80,7 @@ header.top {
     }
   }
 }
+
 
 .photos {
   width: 100%;
@@ -98,8 +105,8 @@ header.top {
       img {
         width: 30px;
         height: 30px;
-        border-radius: 180px;
         flex-basis: 30px;
+        border-radius: 180px;
       }
 
       a {
@@ -117,7 +124,7 @@ header.top {
     }
 
     img {
-      width: 100%
+      width: 100%;
     }
 
     .likes, .comments {
@@ -180,4 +187,31 @@ header.top {
       }
     }
   }
+}
+
+.photos-leave {
+  opacity: 1;
+}
+
+.photos-leave.photos-leave-active {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.photos-enter {
+  opacity: 0.01;
+}
+
+.photos-enter.photos-enter-active {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.photos-appear {
+  opacity: 0.01;
+  transition: opacity 1s ease-in;
+}
+
+.photos-appear.photos-appear-active {
+  opacity: 1;
 }
