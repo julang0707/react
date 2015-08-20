@@ -8,20 +8,21 @@ a {
   text-decoration: none; }
 
 body {
-  margin: 0;
-  padding: 0;
-  background-color: #FAFAFA;
   font-size: 16px;
-  font-family: 'Montserrat', sans-serif; }
+  font-family: Montserrat, sans-serif;
+  padding: 0;
+  margin: 0;
+  background: #FAFAFA; }
 
 header.top {
-  background-color: #fff;
-  border-bottom: 2px solid #edeeee; }
+  background: #fff;
+  border-bottom: 1px solid #edeeee; }
   header.top .wrapper {
-    max-width: 900px;
     padding: 15px;
-    overflow: auto;
-    margin: 0 auto; }
+    width: 80%;
+    max-width: 900px;
+    margin: 0 auto;
+    overflow: auto; }
   header.top h1 {
     margin: 0;
     padding: 0;
@@ -37,7 +38,8 @@ header.top {
     margin-left: 20%;
     position: relative;
     top: 0;
-    left: 0; }
+    left: 0;
+    overflow: auto; }
     header.top nav .account {
       position: absolute;
       top: 9px;
@@ -82,8 +84,8 @@ header.top {
       .photos .photo header img {
         width: 30px;
         height: 30px;
-        border-radius: 180px;
-        flex-basis: 30px; }
+        flex-basis: 30px;
+        border-radius: 180px; }
       .photos .photo header a {
         position: absolute;
         top: 20px;
@@ -133,3 +135,24 @@ header.top {
 @media (max-width: 450px) {
   header.top nav input {
     display: none; } }
+
+.photos-leave {
+  opacity: 1; }
+
+.photos-leave.photos-leave-active {
+  opacity: 0.01;
+  transition: opacity 0.5s ease-in; }
+
+.photos-enter {
+  opacity: 0.01; }
+
+.photos-enter.photos-enter-active {
+  opacity: 1;
+  transition: opacity 1s ease-in; }
+
+.photos-appear {
+  opacity: 0.01;
+  transition: opacity 1s ease-in; }
+
+.photos-appear.photos-appear-active {
+  opacity: 1; }
